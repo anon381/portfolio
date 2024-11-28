@@ -77,6 +77,51 @@ export default function Home() {
     tick();
   }, []);
 
+  // Animated cards: reveal + tilt
+  useEffect(() => {
+    const cards = Array.from(document.querySelectorAll<HTMLElement>(".animated-card"));
+    const io = new IntersectionObserver(
+      entries => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            e.target.classList.add("in-view");
+            io.unobserve(e.target);
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+    cards.forEach(c => io.observe(c));
+
+    const handleMove = (e: PointerEvent) => {
+      const target = (e.target as HTMLElement).closest<HTMLElement>(".animated-card");
+      if (!target) return;
+      const r = target.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width - 0.5; // -0.5..0.5
+      const y = (e.clientY - r.top) / r.height - 0.5;
+      target.style.setProperty("--tiltX", `${-(y * 10).toFixed(2)}deg`);
+      target.style.setProperty("--tiltY", `${(x * 10).toFixed(2)}deg`);
+      target.style.setProperty("--glowX", `${(x + 0.5) * 100}%`);
+      target.style.setProperty("--glowY", `${(y + 0.5) * 100}%`);
+    };
+    const reset = (el: HTMLElement) => {
+      el.style.setProperty("--tiltX", "0deg");
+      el.style.setProperty("--tiltY", "0deg");
+    };
+    const handleLeave = (e: PointerEvent) => {
+      const target = (e.target as HTMLElement).closest<HTMLElement>(".animated-card");
+      if (!target) return;
+      reset(target);
+    };
+    window.addEventListener("pointermove", handleMove, { passive: true });
+    window.addEventListener("pointerleave", handleLeave, { passive: true });
+    return () => {
+      io.disconnect();
+      window.removeEventListener("pointermove", handleMove);
+      window.removeEventListener("pointerleave", handleLeave);
+    };
+  }, []);
+
   // Scroll progress bar
   const [scrollProgress, setScrollProgress] = useState(0);
   useEffect(() => {
@@ -164,7 +209,7 @@ export default function Home() {
           <div className="space-y-6">
             <div>
               <h3 className="font-semibold text-base mb-2">🏆 Main Projects</h3>
-              <div className="bg-white/80 dark:bg-gray-900/80 rounded-2xl shadow-xl p-4 border border-purple-100 dark:border-purple-900 flex flex-col justify-between h-full mb-4">
+              <div className="animated-card bg-white/80 dark:bg-gray-900/80 rounded-2xl shadow-xl p-4 border border-purple-100 dark:border-purple-900 flex flex-col justify-between h-full mb-4">
                 <span className="font-bold">JSL Church Website V1</span>
                 <span className="text-xs">Next.js, TS, Tailwind, shadcn/ui</span>
                 <a href="#" className="text-blue-600 hover:underline text-xs">Live Site</a>
@@ -173,22 +218,22 @@ export default function Home() {
             <div>
               <h3 className="font-semibold text-base mb-2">📦 Mini Projects</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="bg-white/80 dark:bg-gray-900/80 rounded-2xl shadow-xl p-4 border border-purple-100 dark:border-purple-900 flex flex-col justify-between h-full">
+                <div className="animated-card bg-white/80 dark:bg-gray-900/80 rounded-2xl shadow-xl p-4 border border-purple-100 dark:border-purple-900 flex flex-col justify-between h-full">
                   <span className="font-bold">Movie Reviewer</span>
                   <span className="text-xs">React, Vite, PostgreSQL, Supabase backend</span>
                   <a href="#" className="text-blue-600 hover:underline text-xs">Live Site</a>
                 </div>
-                <div className="bg-white/80 dark:bg-gray-900/80 rounded-2xl shadow-xl p-4 border border-purple-100 dark:border-purple-900 flex flex-col justify-between h-full">
+                <div className="animated-card bg-white/80 dark:bg-gray-900/80 rounded-2xl shadow-xl p-4 border border-purple-100 dark:border-purple-900 flex flex-col justify-between h-full">
                   <span className="font-bold">Github-Profile-Viewer</span>
                   <span className="text-xs">React, Vite, Tailwind</span>
                   <a href="#" className="text-blue-600 hover:underline text-xs">Live Site</a>
                 </div>
-                <div className="bg-white/80 dark:bg-gray-900/80 rounded-2xl shadow-xl p-4 border border-purple-100 dark:border-purple-900 flex flex-col justify-between h-full">
+                <div className="animated-card bg-white/80 dark:bg-gray-900/80 rounded-2xl shadow-xl p-4 border border-purple-100 dark:border-purple-900 flex flex-col justify-between h-full">
                   <span className="font-bold">New Bookstore</span>
                   <span className="text-xs">PHP, MySQL</span>
                   <a href="#" className="text-blue-600 hover:underline text-xs">GitHub Repo</a>
                 </div>
-                <div className="bg-white/80 dark:bg-gray-900/80 rounded-2xl shadow-xl p-4 border border-purple-100 dark:border-purple-900 flex flex-col justify-between h-full">
+                <div className="animated-card bg-white/80 dark:bg-gray-900/80 rounded-2xl shadow-xl p-4 border border-purple-100 dark:border-purple-900 flex flex-col justify-between h-full">
                   <span className="font-bold">To-Do List</span>
                   <span className="text-xs">React, Vite, Node.js, Express.js</span>
                   <a href="#" className="text-blue-600 hover:underline text-xs">GitHub Repo</a>
@@ -198,22 +243,22 @@ export default function Home() {
             <div>
               <h3 className="font-semibold text-base mb-2">� Solo Projects</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="bg-white/80 dark:bg-gray-900/80 rounded-2xl shadow-xl p-4 border border-purple-100 dark:border-purple-900 flex flex-col justify-between h-full">
+                <div className="animated-card bg-white/80 dark:bg-gray-900/80 rounded-2xl shadow-xl p-4 border border-purple-100 dark:border-purple-900 flex flex-col justify-between h-full">
                   <span className="font-bold">Movie Reviewer</span>
                   <span className="text-xs">React, Vite, PostgreSQL, Supabase backend</span>
                   <a href="#" className="text-blue-600 hover:underline text-xs">Live Site</a>
                 </div>
-                <div className="bg-white/80 dark:bg-gray-900/80 rounded-2xl shadow-xl p-4 border border-purple-100 dark:border-purple-900 flex flex-col justify-between h-full">
+                <div className="animated-card bg-white/80 dark:bg-gray-900/80 rounded-2xl shadow-xl p-4 border border-purple-100 dark:border-purple-900 flex flex-col justify-between h-full">
                   <span className="font-bold">Github-Profile-Viewer</span>
                   <span className="text-xs">React, Vite, Tailwind</span>
                   <a href="#" className="text-blue-600 hover:underline text-xs">Live Site</a>
                 </div>
-                <div className="bg-white/80 dark:bg-gray-900/80 rounded-2xl shadow-xl p-4 border border-purple-100 dark:border-purple-900 flex flex-col justify-between h-full">
+                <div className="animated-card bg-white/80 dark:bg-gray-900/80 rounded-2xl shadow-xl p-4 border border-purple-100 dark:border-purple-900 flex flex-col justify-between h-full">
                   <span className="font-bold">New Bookstore</span>
                   <span className="text-xs">PHP, MySQL</span>
                   <a href="#" className="text-blue-600 hover:underline text-xs">GitHub Repo</a>
                 </div>
-                <div className="bg-white/80 dark:bg-gray-900/80 rounded-2xl shadow-xl p-4 border border-purple-100 dark:border-purple-900 flex flex-col justify-between h-full">
+                <div className="animated-card bg-white/80 dark:bg-gray-900/80 rounded-2xl shadow-xl p-4 border border-purple-100 dark:border-purple-900 flex flex-col justify-between h-full">
                   <span className="font-bold">To-Do List</span>
                   <span className="text-xs">React, Vite, Node.js, Express.js</span>
                   <a href="#" className="text-blue-600 hover:underline text-xs">GitHub Repo</a>
@@ -250,9 +295,8 @@ export default function Home() {
         <section className="mb-8 sm:mb-10 w-full px-2 sm:px-0">
           <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 text-blue-700 dark:text-blue-300">Contact</h2>
           <ul className="flex flex-col gap-2 text-sm sm:text-base">
-            <li>Email: <a href="mailto:john.doe@email.com" className="text-blue-600 hover:underline">john.doe@email.com</a></li>
-            <li>Telegram: <a href="#" className="text-blue-600 hover:underline">@johndoe</a></li>
-            <li>LinkedIn: <a href="#" className="text-blue-600 hover:underline">linkedin.com/in/johndoe</a></li>
+            <li>Email: <a href="mailto:john.doe@email.com" className="text-blue-600 hover:underline">@email.com</a></li>
+            <li>Telegram: <a href="#" className="text-blue-600 hover:underline">@tlegram</a></li>
           </ul>
         </section>
 
@@ -289,6 +333,34 @@ export default function Home() {
         }
         .tech-badge {
           @apply px-3 py-1 sm:px-4 sm:py-2 bg-white/70 dark:bg-gray-800/70 border border-blue-100 dark:border-blue-900 text-blue-900 dark:text-blue-200 rounded-full text-xs sm:text-sm font-semibold shadow transition-all hover:scale-110 hover:bg-gradient-to-r hover:from-blue-100 hover:via-purple-100 hover:to-pink-100 animate-fade-in;
+        }
+        .animated-card {
+          --tiltX: 0deg;
+          --tiltY: 0deg;
+          --glowX: 50%;
+          --glowY: 50%;
+          position: relative;
+          isolation: isolate;
+          transition: transform .9s cubic-bezier(.16,.8,.24,1), box-shadow .6s ease, background-position 4s linear;
+          background-image: radial-gradient(circle at var(--glowX) var(--glowY), rgba(147,197,253,.35), transparent 60%);
+          transform: perspective(900px) rotateX(var(--tiltX)) rotateY(var(--tiltY)) translateY(0) scale(.96);
+          opacity: 0;
+        }
+        .animated-card:before {
+          content: "";
+            position: absolute; inset: 0; border-radius: inherit; padding: 1px; background:
+            linear-gradient(130deg, rgba(59,130,246,.6), rgba(168,85,247,.4), rgba(236,72,153,.5));
+            -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            -webkit-mask-composite: xor; mask-composite: exclude; opacity: .4; transition: opacity .5s;
+        }
+        .animated-card.in-view {
+          opacity: 1;
+          transform: perspective(900px) rotateX(0deg) rotateY(0deg) translateY(0) scale(1);
+        }
+        .animated-card:hover:before { opacity: 1; }
+        .animated-card:hover {
+          transform: perspective(900px) rotateX(var(--tiltX)) rotateY(var(--tiltY)) translateY(-4px) scale(1.03);
+          box-shadow: 0 12px 40px -10px rgba(59,130,246,.35), 0 4px 14px -4px rgba(14,165,233,.3);
         }
         .animate-caret {
           animation: caretBlink 1s step-end infinite;
