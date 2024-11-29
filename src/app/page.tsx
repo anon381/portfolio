@@ -4,7 +4,7 @@
 
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const techStack = [
   "Next.js", "React", "TypeScript", "TailwindCSS", "Node.js", "Express.js", "GraphQL", "PostgreSQL", "MongoDB", "Supabase", "MySQL", "Vercel", "Netlify", "Auth.js", "Clerk", "Firebase", "Jest", "React Testing Library", "Figma"
@@ -38,24 +38,71 @@ const projects = [
 ];
 
 export default function Home() {
+  const roles = [
+    "Full-Stack Web Developer",
+    "Performance Optimizer",
+    "API Designer",
+    "UI/UX Collaborator",
+    "Continuous Learner"
+  ];
   const [typedText, setTypedText] = useState("");
-  const fullText = "Full-Stack Web Developer";
+  const roleIndexRef = useRef(0);
+  const charIndexRef = useRef(0);
+  const deletingRef = useRef(false);
 
   useEffect(() => {
-    let i = 0;
-    const interval = setInterval(() => {
-      setTypedText(fullText.slice(0, i));
-      i++;
-      if (i > fullText.length) clearInterval(interval);
-    }, 60);
-    return () => clearInterval(interval);
+    const tick = () => {
+      const current = roles[roleIndexRef.current];
+      if (!deletingRef.current) {
+        // typing
+        charIndexRef.current += 1;
+        setTypedText(current.slice(0, charIndexRef.current));
+        if (charIndexRef.current === current.length) {
+          deletingRef.current = true;
+          setTimeout(tick, 1400); // pause before deleting
+          return;
+        }
+      } else {
+        // deleting
+        charIndexRef.current -= 1;
+        setTypedText(current.slice(0, charIndexRef.current));
+        if (charIndexRef.current === 0) {
+          deletingRef.current = false;
+          roleIndexRef.current = (roleIndexRef.current + 1) % roles.length;
+        }
+      }
+      const delay = deletingRef.current ? 35 : 55;
+      setTimeout(tick, delay);
+    };
+    tick();
+  }, []);
+
+  // Scroll progress bar
+  const [scrollProgress, setScrollProgress] = useState(0);
+  useEffect(() => {
+    const onScroll = () => {
+      const doc = document.documentElement;
+      const total = doc.scrollHeight - doc.clientHeight;
+      const sc = (window.scrollY / total) * 100;
+      setScrollProgress(sc);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   return (
 
     <div className="min-h-screen w-full relative flex flex-col items-center justify-center px-2 sm:px-4 overflow-hidden">
+      {/* Scroll Progress Bar */}
+      <div className="fixed top-0 left-0 h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 z-50 transition-[width] duration-150 ease-out" style={{ width: `${scrollProgress}%` }} />
       {/* Animated Gradient Background */}
       <div className="absolute inset-0 z-0 animate-gradient bg-gradient-to-br from-blue-400 via-purple-400 to-pink-400 opacity-40 blur-2xl"></div>
+      {/* Floating Orbs */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="orb orb-a" />
+        <div className="orb orb-b" />
+        <div className="orb orb-c" />
+      </div>
 
       <main className="w-full max-w-4xl mx-auto py-8 sm:py-12 flex flex-col items-center z-10">
         {/* Hero Section with Glassmorphism Card */}
@@ -65,7 +112,10 @@ export default function Home() {
               <span className="inline-block w-14 h-14 rounded-full bg-gradient-to-tr from-blue-500 via-purple-500 to-pink-500 flex items-center justify-center text-white text-3xl font-bold shadow-lg">JD</span>
               <div className="w-full text-center sm:text-left">
                 <h1 className="text-3xl sm:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 mb-1 animate-fade-in">Yabets Maregn</h1>
-                <span className="block text-base sm:text-lg font-mono text-gray-700 dark:text-gray-200 animate-typing border-r-2 border-blue-600 pr-2">{typedText}</span>
+                <span className="block text-base sm:text-lg font-mono text-gray-700 dark:text-gray-200 relative pr-3">
+                  <span className="animate-fade-in inline-block">{typedText}</span>
+                  <span className="absolute right-0 top-1/2 -translate-y-1/2 w-[2px] h-5 bg-blue-600 animate-caret" />
+                </span>
               </div>
             </div>
             <p className="mt-2 text-sm sm:text-base text-gray-700 dark:text-gray-300 animate-fade-in delay-300 text-center">I build modern, scalable web applications from front to back.<br/>Let's create something amazing together!</p>
@@ -239,6 +289,31 @@ export default function Home() {
         }
         .tech-badge {
           @apply px-3 py-1 sm:px-4 sm:py-2 bg-white/70 dark:bg-gray-800/70 border border-blue-100 dark:border-blue-900 text-blue-900 dark:text-blue-200 rounded-full text-xs sm:text-sm font-semibold shadow transition-all hover:scale-110 hover:bg-gradient-to-r hover:from-blue-100 hover:via-purple-100 hover:to-pink-100 animate-fade-in;
+        }
+        .animate-caret {
+          animation: caretBlink 1s step-end infinite;
+        }
+        @keyframes caretBlink {
+          0%, 60% { opacity: 1; }
+          61%, 100% { opacity: 0; }
+        }
+        .orb {
+          position: absolute;
+          width: 420px;
+          height: 420px;
+          border-radius: 50%;
+          filter: blur(120px);
+          opacity: 0.35;
+          mix-blend-mode: overlay;
+          animation: float 18s ease-in-out infinite;
+        }
+        .orb-a { background: radial-gradient(circle at 30% 30%, #60a5fa, transparent 60%); top: -10%; left: -10%; animation-delay: 0s; }
+        .orb-b { background: radial-gradient(circle at 70% 40%, #a78bfa, transparent 60%); bottom: -15%; right: -5%; animation-delay: 4s; }
+        .orb-c { background: radial-gradient(circle at 40% 60%, #f472b6, transparent 60%); top: 40%; right: 55%; animation-delay: 8s; }
+        @keyframes float {
+          0% { transform: translateY(0) scale(1); }
+          50% { transform: translateY(-60px) scale(1.15); }
+          100% { transform: translateY(0) scale(1); }
         }
       `}</style>
     </div>
