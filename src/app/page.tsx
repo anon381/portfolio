@@ -64,7 +64,7 @@ export default function Home() {
             <div className="mb-4 flex flex-col sm:flex-row items-center gap-3 w-full">
               <span className="inline-block w-14 h-14 rounded-full bg-gradient-to-tr from-blue-500 via-purple-500 to-pink-500 flex items-center justify-center text-white text-3xl font-bold shadow-lg">JD</span>
               <div className="w-full text-center sm:text-left">
-                <h1 className="text-3xl sm:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 mb-1 animate-fade-in">John Doe</h1>
+                <h1 className="text-3xl sm:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 mb-1 animate-fade-in">Yabets Maregn</h1>
                 <span className="block text-base sm:text-lg font-mono text-gray-700 dark:text-gray-200 animate-typing border-r-2 border-blue-600 pr-2">{typedText}</span>
               </div>
             </div>
