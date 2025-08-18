@@ -1,36 +1,51 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Yabets Maregn - Portfolio
 
-## Getting Started
+Welcome to my portfolio! This repository showcases my projects, skills, and coding journey.  
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 👨‍💻 About Me
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Hi! I'm **Yabets Maregn**, a software student passionate about web development, algorithms, and building practical applications. I enjoy solving programming challenges and creating interactive, efficient, and user-friendly projects.  
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 🛠 Skills
 
-## Learn More
+- **Languages:** Python, PHP, JavaScript, Java, C++
+- **Frameworks/Libraries:** React, Laravel, Node.js, Express
+- **Databases:** MySQL, PostgreSQL, Supabase
+- **Other:** Git, HTML, CSS, Tailwind, Vite, API integration, CRUD apps
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🚀 Projects
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Project | Stack | Description | Live/Demo |
+|---------|-------|-------------|-----------|
+| **Bookstore** | PHP, Laravel, MySQL, HTML, CSS, JS | Manage books with add/update/delete, search, filtering, and cover uploads with image processing. | [GitHub Repo](https://github.com/anon381/new_bookstore-main) |
+| **Expense Tracker** | React, Node.js, Express, PostgreSQL | Track income and expenses with charts, categories, and summary. | [Live Site](#) |
+| **GitHub Profile Viewer** | React, Vite, JS | View GitHub user stats and repositories in a clean interface. | [Live Site](https://github-profile-viewer-phi-lemon.vercel.app/) |
+| **To-Do List** | React, Vite, Node.js, Express, Auth.js | Full-stack to-do app with authentication, add/update/delete tasks, and filtering. | [Live Site](#) |
+| **LeetCode Solutions** | Python | Collection of algorithm solutions and problem-solving practice. | [GitHub Repo](#) |
 
-## Deploy on Vercel
+> More projects coming soon as I continue to learn and build!  
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📂 Repository Structure
+
+- `frontend/` – React/Vite frontend projects  
+- `backend/` – Node.js/Express or Laravel backend projects  
+- `solutions/` – Algorithm and problem-solving solutions  
+- `README.md` – Portfolio overview  
+
+---
+
+## 📫 Contact
+
+- GitHub: [@anon381](https://github.com/anon381)  
+
+---
+
+Feel free to explore, star, and fork my projects! ⭐
