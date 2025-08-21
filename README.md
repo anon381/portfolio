@@ -44,8 +44,7 @@ Hi! I'm **Yabets Maregn**, a software student passionate about web development, 
 
 ## 📫 Contact
 
-- GitHub: [@anon381](https://github.com/anon381)  
-
+- telegram: [@Telegram-link](https://t.me/Anonymous_l_y)
 ---
 
 Feel free to explore, star, and fork my projects! ⭐
